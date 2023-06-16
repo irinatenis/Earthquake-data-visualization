@@ -9,14 +9,15 @@ function createMap (a) {
   "World Map": Esri_OceanBasemap
 };
 
-  // Create an overlayMaps object to hold the bikeStations layer.
+  // Create an overlayMaps object to hold the earthquakes layer.
   let overlayMaps = {
     "Earthquakes": a
   }
+  console.log(a);
 // Create the map object with options.
   let map = L.map("map", {
     center: [40.73, -74.0059],
-    zoom: 1,
+    zoom: 3,
     layers: [Esri_OceanBasemap, a]
 });
 // Create a layer control, and pass it baseMaps and overlayMaps. Add the layer control to the map.
@@ -27,21 +28,87 @@ function createMap (a) {
 function createMarkers(response) {
 // Pull the "features" property from response.data.
   let features = response.features;
+  
+// ICON CREATE
+//Loop through the data
+// let earthquakesMagnitudes =[];
+// let depths =[]
+//   for (let index = 0; index < features.length; index++) {
+//     let earthquakesMagnitude = features[index].properties["mag"];
+// earthquakesMagnitudes.push(earthquakesMagnitude); 
+//     let depth =  features[index].geometry.coordinates[2];
+// depths.push (depth);     
+// }
+// let iconOptions = {
+//                 iconUrl:'leaf-green.png',
+//                 iconSize:earthquakesMagnitudes,
+//                 // fillColor = ~colorBin('RdBu',WATER_LAND_RATIO)
+//             };
+// //Creating a custom icon
+// var customIcon = L.icon(iconOptions);
+        
+// let markerOptions={
+//     clickable: true,
+//     draggable: true,
+//     icon:customIcon
+// };
 // Initialize an array to hold earthquake  markers.
   let earthquakeMarkers = [];
 //Loop through the features data
   for (let index = 0; index < features.length; index++) {
     let feature = features[index];
+    //DEPTH
+    
   //   console.log(feature.geometry["coordinates"]
   // [1]);
  // For each station, create a marker, and bind a popup with the station's name.   
-    let earthquakeMarker = L.marker([feature.geometry["coordinates"][1],
-    feature.geometry["coordinates"][0]]);
-  
+    // let earthquakeMarker = L.marker([feature.geometry["coordinates"][1],
+    // feature.geometry["coordinates"][0]]);
+
+
+// Create a circle, and pass in some initial options.
+function chooseColor (depth) {
+  // let depth = feature.geometry["coordinates"][2];
+  if (depth >= 90) return "#FF5F65";
+  else if (depth >= 70 && depth<= 90) return "#FCA35D";
+  else if (depth >= 50 && depth<= 70) return "#fdb72a";
+  else if (depth >= 30 && depth<= 50) return "#F7DB11";
+  else if (depth >= 10 && depth<= 30) return "#DCF400";
+  else if (depth >= -10 && depth<= 10) return "#A4F600";
+  else {
+    return "red";
+  }
+}
+// let depths = feature.geometry["coordinates"][2];
+  let earthquakeMarker =L.circle([feature.geometry["coordinates"][1],
+    feature.geometry["coordinates"][0]],{
+      color: "black",
+      weight:0.1,
+    //  color: chooseColor(feature.geometry["coordinates"][2]),
+    //  fillColor: ["#FCA35D","#fdb72a"],
+     //weight:23,
     
+    fillColor: chooseColor(feature.geometry["coordinates"][2]),
+    //size: 25,
+    fillOpacity: 1,
+    radius: 100000
+      });
+  console.log(feature.geometry["coordinates"][2]);
+    
+// function chooseColor (depth) {
+//         if (depth >= 90) return {color:"red"};
+//         if (depth >= 70 && depth<= 90) return {color:"#FCA35D"};
+//         if (depth >= 50 && depth<= 70) return {color:"#fdb72a"};
+//         if (depth >= 30 && depth<= 50) return {color:"#F7DB11"};
+//         if (depth >= 10 && depth<= 30) return {color:"#DCF400"};
+//         if (depth >= -10 && depth<= 10) return {color:"#A3F600"};
+//       }
+// }).addTo(myMap);
+
  // Add the marker to the bikeMarkers array.
   earthquakeMarkers.push(earthquakeMarker);
 }
+console.log (earthquakeMarkers);
 // Create a layer group that's made from the bike markers array, and pass it to the createMap function.
 createMap(L.layerGroup(earthquakeMarkers));
 }
