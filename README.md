@@ -1,4 +1,4 @@
-# leaflet-challenge
+# Earthquake data visualization
 ## Goal
 To vizualize the earthquake dataset for the past day from the [United States Geological Survey](https://earthquake.usgs.gov/earthquakes/feed/v1.0/geojson.php).
 ## Tools
