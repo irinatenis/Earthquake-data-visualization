@@ -10,3 +10,6 @@ JavaScript, HTML, Leaflet
 - Customized the markers size (radius) based on the *magnitude* attribute.
 - Included pop-ups that provide coordinates, depth, and magnitude information when its associated marker is clicked.
 - Created a legend that provides context for the colors on the map.
+- ![image](https://github.com/irinatenis/Earthquake-data-visualization/assets/120978502/718816d9-6054-4528-ac7e-7b1faa520714)
+
+  
